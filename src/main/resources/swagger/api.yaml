@@ -280,8 +280,78 @@ paths:
         500:
           description: Something not OK
 
+  /order/{id}:
+    get:
+      operationId: getOrder
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: orderId
+        - in: header
+          name: X-API-KEY
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      responses:
+        200:
+          description: success, order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+        404:
+          description: order not found
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
 components:
   schemas:
+
+    order:
+      type: object
+      required:
+        - id
+        - name
+        - userId
+        - totalPrice
+        - orderProducts
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        userId:
+          type: integer
+        totalPrice:
+          type: number
+        orderProducts:
+          $ref: '#/components/schemas/orderProducts'
+
+    orderProducts:
+      type: array
+      items:
+        $ref: '#/components/schemas/orderProduct'
+
+    orderProduct:
+      type: object
+      required:
+        - product
+        - quantity
+      properties:
+        product:
+          $ref: '#/components/schemas/product'
+        quantity:
+          type: integer
+
     productList:
       type: array
       items:
