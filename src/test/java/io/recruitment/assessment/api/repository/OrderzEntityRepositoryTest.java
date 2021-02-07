@@ -30,14 +30,13 @@ class OrderzEntityRepositoryTest {
     void setup()  {
         ProductEntity productEntity = productRepository.findById(1).get();
         OrderzEntity orderzEntity = OrderzEntity.builder()
-                .id(1)
                 .name("test")
                 .createdBy(1)
                 .userId(2)
                 .build();
-        repository.save(orderzEntity);
+        repository.saveAndFlush(orderzEntity);
         orderzProductRepository.save(OrderzProductEntity.builder()
-                .id(1)
+                .id(orderzEntity.getId())
                 .quantity(1)
                 .productEntity(productEntity)
                 .orderzEntity(orderzEntity)

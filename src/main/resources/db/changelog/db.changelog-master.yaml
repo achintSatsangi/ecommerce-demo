@@ -11,3 +11,5 @@ databaseChangeLog:
       file: ./db/changelog/04-order-table.xml
   - include:
       file: ./db/changelog/05-order_product-table.xml
+  - include:
+      file: ./db/changelog/06-hibernate-sequence.xml

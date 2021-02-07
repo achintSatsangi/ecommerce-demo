@@ -13,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,6 +30,7 @@ import java.sql.Timestamp;
 public class OrderzProductEntity {
 
     @Id
+    @GeneratedValue
     private Integer id;
 
     @NonNull

@@ -4,10 +4,12 @@ import io.recruitment.assessment.api.UserValidator;
 import io.recruitment.assessment.api.controller.OrderApiDelegate;
 import io.recruitment.assessment.api.domain.OrderzEntity;
 import io.recruitment.assessment.api.domain.OrderzProductEntity;
+import io.recruitment.assessment.api.domain.ProductEntity;
 import io.recruitment.assessment.api.domain.User;
 import io.recruitment.assessment.api.model.Order;
 import io.recruitment.assessment.api.model.OrderProduct;
 import io.recruitment.assessment.api.model.Product;
+import io.recruitment.assessment.api.repository.OrderzProductRepository;
 import io.recruitment.assessment.api.repository.OrderzRepository;
 import io.recruitment.assessment.api.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,14 +38,16 @@ public class OrderApiDelegateImpl implements OrderApiDelegate {
 
     private final OrderzRepository orderzRepository;
     private final ProductRepository productRepository;
+    private final OrderzProductRepository orderzProductRepository;
 
     private final UserValidator userValidator;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public OrderApiDelegateImpl(OrderzRepository orderzRepository, ProductRepository productRepository, UserValidator userValidator, ModelMapper modelMapper) {
+    public OrderApiDelegateImpl(OrderzRepository orderzRepository, ProductRepository productRepository, OrderzProductRepository orderzProductRepository, UserValidator userValidator, ModelMapper modelMapper) {
         this.productRepository = productRepository;
         this.orderzRepository = orderzRepository;
+        this.orderzProductRepository = orderzProductRepository;
         this.userValidator = userValidator;
         this.modelMapper = modelMapper;
     }
@@ -83,7 +90,7 @@ public class OrderApiDelegateImpl implements OrderApiDelegate {
         if(optionalAdminUser.isPresent()) {
             Optional<OrderzEntity> orderById = orderzRepository.findById(id);
             if(orderById.isPresent()) {
-                return saveAndGetExistingOrderResponseEntity(orderProduct, orderById);
+                return saveAndGetExistingOrderResponseEntity(orderProduct, orderById, optionalAdminUser.get().getId());
             } else {
                 return ResponseEntity.notFound().build();
             }
@@ -93,7 +100,7 @@ public class OrderApiDelegateImpl implements OrderApiDelegate {
             Optional<OrderzEntity> orderById = orderzRepository.findById(id);
             if(orderById.isPresent()) {
                 if(optionalUser.get().getId().equals(orderById.get().getUserId())) {
-                    return saveAndGetExistingOrderResponseEntity(orderProduct, orderById);
+                    return saveAndGetExistingOrderResponseEntity(orderProduct, orderById, optionalUser.get().getId());
                 } else {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
                 }
@@ -112,27 +119,32 @@ public class OrderApiDelegateImpl implements OrderApiDelegate {
                                                  Integer userId) {
         Optional<User> optionalAdminUser = userValidator.validateUserRole(X_API_KEY, ADMIN);
         if(optionalAdminUser.isPresent()) {
-            return saveAndGetFreshOrderResponseEntity(order, userId);
+            return saveAndGetFreshOrderResponseEntity(order, userId, optionalAdminUser.get().getId());
         }
         Optional<User> optionalUser = userValidator.validateUserRole(X_API_KEY, CUSTOMER);
         if(optionalUser.isPresent()) {
-            return saveAndGetFreshOrderResponseEntity(order, optionalUser.get().getId());
+            return saveAndGetFreshOrderResponseEntity(order, optionalUser.get().getId(), optionalUser.get().getId());
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
-    private ResponseEntity<Order> saveAndGetExistingOrderResponseEntity(OrderProduct orderProduct, Optional<OrderzEntity> orderById) {
+    private ResponseEntity<Order> saveAndGetExistingOrderResponseEntity(OrderProduct orderProduct, Optional<OrderzEntity> orderById, Integer userId) {
         OrderzEntity orderzEntity = orderById.get();
-        orderzEntity.getOrderzProductEntities().add(mapOrderProductToOrderzProductEntity(orderProduct));
-        orderzRepository.saveAndFlush(orderzEntity);
-        return ResponseEntity.ok(mapOrder(orderzEntity));
+        orderzProductRepository.save(mapOrderProductToOrderzProductEntity(orderProduct, userId, orderzEntity));
+        orderzProductRepository.flush();
+        return ResponseEntity.ok(mapOrder(orderzRepository.findById(orderzEntity.getId()).get()));
     }
 
-    private ResponseEntity<Order> saveAndGetFreshOrderResponseEntity(Order order, Integer id) {
-        OrderzEntity orderzEntity = mapOrderEntity(order, id);
+    private ResponseEntity<Order> saveAndGetFreshOrderResponseEntity(Order order, Integer id, Integer apiUserId) {
+        OrderzEntity orderzEntity = mapFreshOrderEntity(order, id, apiUserId);
         orderzRepository.saveAndFlush(orderzEntity);
-        return ResponseEntity.ok(mapOrder(orderzEntity));
+
+        List<OrderzProductEntity> orderzProductEntities = order.getOrderProducts().stream()
+                .map(op -> mapOrderProductToOrderzProductEntity(op, apiUserId, orderzEntity))
+                .collect(Collectors.toList());
+        orderzProductEntities.forEach(orderzProductRepository::saveAndFlush);
+        return ResponseEntity.ok(mapOrder(orderzRepository.findById(orderzEntity.getId()).get()));
     }
 
     private Order mapOrder(OrderzEntity orderzEntity) {
@@ -143,28 +155,30 @@ public class OrderApiDelegateImpl implements OrderApiDelegate {
         order.setId(orderzEntity.getId());
         order.setName(orderzEntity.getName());
         order.setUserId(orderzEntity.getUserId());
+        List<OrderzProductEntity> orderProductEntities = orderzProductRepository.findByOrderId(orderzEntity.getId());
         order.getOrderProducts().addAll(
-        orderzEntity.getOrderzProductEntities().stream()
+                orderProductEntities.stream()
                 .map(e -> mapOrderzProductEntityToOrderProduct(e))
                 .collect(Collectors.toList()));
         order.setTotalPrice(
-                orderzEntity.getOrderzProductEntities().stream()
+                orderProductEntities.stream()
                 .map(e -> e.getProductEntity().getPrice().multiply(new BigDecimal(e.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
         return order;
     }
 
-    private OrderzEntity mapOrderEntity(Order order, Integer userId) {
+    private OrderzEntity mapFreshOrderEntity(Order order, Integer userId, Integer apiUserId) {
         if (isNull(order)) {
             return null;
         }
         return OrderzEntity.builder()
                 .name(order.getName())
                 .userId(userId)
-                .orderzProductEntities(
-                        order.getOrderProducts().stream()
-                        .map(op -> mapOrderProductToOrderzProductEntity(op))
-                        .collect(Collectors.toList())).build();
+                .createdBy(apiUserId)
+                .createdAt(Timestamp.valueOf(LocalDateTime.now()))
+                .updatedBy(apiUserId)
+                .updatedAt(Timestamp.valueOf(LocalDateTime.now()))
+                .build();
     }
 
     private OrderProduct mapOrderzProductEntityToOrderProduct(OrderzProductEntity entity) {
@@ -174,11 +188,16 @@ public class OrderApiDelegateImpl implements OrderApiDelegate {
         return orderProduct;
     }
 
-    private OrderzProductEntity mapOrderProductToOrderzProductEntity(OrderProduct orderProduct) {
+    private OrderzProductEntity mapOrderProductToOrderzProductEntity(OrderProduct orderProduct, Integer userId, OrderzEntity orderzEntity) {
         return OrderzProductEntity.builder()
+                .orderzEntity(orderzEntity)
                 .productEntity(productRepository.findById(orderProduct.getProduct().getId())
                         .orElseThrow(() -> new RuntimeException("Product Id is invalid")))
                 .quantity(orderProduct.getQuantity())
+                .createdBy(userId)
+                .createdAt(Timestamp.valueOf(LocalDateTime.now()))
+                .updatedBy(userId)
+                .updatedAt(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
     }
 }

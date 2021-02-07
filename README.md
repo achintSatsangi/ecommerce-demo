@@ -2,7 +2,7 @@
 - Spring boot
 - Java 11
 - Mysql running on docker
-- Liquibnase for database version management
+- Liquibase for database version management (Application creates and maintains the DB)
 - Open API spec (Swagger support)
 
 ## Building the app locally
@@ -19,4 +19,4 @@ mvn spring-boot:run
 
 ## Local URL
 
-[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+[http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/](http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/)

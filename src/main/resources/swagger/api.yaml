@@ -403,10 +403,13 @@ components:
       properties:
         id:
           type: integer
+          nullable: false
         name:
           type: string
+          nullable: false
         userId:
           type: integer
+          nullable: false
         totalPrice:
           type: number
         orderProducts:
