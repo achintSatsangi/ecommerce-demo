@@ -313,6 +313,82 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
+  /order/addProduct:
+    post:
+      operationId: postFreshOrder
+      parameters:
+      - in: query
+        name: userId
+        required: false
+        schema:
+          type: integer
+      - in: header
+        name: X-API-KEY
+        schema:
+          type: string
+          format: uuid
+        required: true
+
+      requestBody:
+        description: The required body of order
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order'
+
+      responses:
+        200:
+          description: success, order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /order/addProduct/{id}:
+    post:
+      operationId: addToExistingOrder
+      parameters:
+        - in: header
+          name: X-API-KEY
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: orderId
+
+      requestBody:
+        description: The required body of orderProduct
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orderProduct'
+
+      responses:
+        200:
+          description: success, order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 components:
   schemas:
 
