@@ -42,6 +42,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/product'
+        404:
+          description: product not found
         500:
           description: Internal error occurred
           content:
@@ -92,6 +94,96 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
+  /admin/product/add:
+    post:
+      operationId: addProduct
+      description: addProduct
+
+      parameters:
+        - in: header
+          name: X-API-KEY
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      requestBody:
+        description: The required body to initiate payment
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
+
+      responses:
+        200:
+          description: OK returned if payment is initiated
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        400:
+          description: Bad request
+
+  /admin/product/update:
+    post:
+      operationId: updateProduct
+      description: updateProduct
+
+      parameters:
+        - in: header
+          name: X-API-KEY
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      requestBody:
+        description: The required body to initiate payment
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
+
+      responses:
+        200:
+          description: OK returned if payment is initiated
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        400:
+          description: Bad request
+
+  /admin/product/delete/{id}:
+    delete:
+      operationId: deleteProduct
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: productId
+        - in: header
+          name: X-API-KEY
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      responses:
+        200:
+          description: OK
+        404:
+          description: product not found
+        500:
+          description: Something not OK
 components:
   schemas:
     productList:
