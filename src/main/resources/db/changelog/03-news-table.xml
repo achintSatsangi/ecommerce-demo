@@ -6,14 +6,14 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="create-NEWS-table" author="achint.satsangi">
+    <changeSet id="create-news-table" author="achint.satsangi">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="NEWS"/>
+                <tableExists tableName="news"/>
             </not>
         </preConditions>
 
-        <createTable tableName="NEWS"
+        <createTable tableName="news"
                      remarks="A table for NEWSs">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
@@ -39,16 +39,16 @@
         </createTable>
 
         <rollback>
-            <dropTable tableName="USERS"/>
+            <dropTable tableName="users"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="insert-NEWS-in-NEWS-table" author="achint.satsangi">
+    <changeSet id="insert-news-in-news-table" author="achint.satsangi">
         <preConditions onFail="MARK_RAN">
-                <tableExists tableName="NEWS"/>
+                <tableExists tableName="news"/>
         </preConditions>
 
-        <insert tableName="NEWS">
+        <insert tableName="news">
             <column name="title">News item 1</column>
             <column name="short_description">Some good humour...</column>
             <column name="long_description">
@@ -61,7 +61,7 @@
             <column name="image_url"><![CDATA[https://i.pinimg.com/736x/1f/8b/c5/1f8bc5695ae270c909edfb94069a62dd.jpg]]></column>
             <column name="created_by">1</column>
         </insert>
-        <insert tableName="NEWS">
+        <insert tableName="news">
             <column name="title">Spanner item 1</column>
             <column name="short_description">Spanners to take over the world</column>
             <column name="long_description">

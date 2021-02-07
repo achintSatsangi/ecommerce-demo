@@ -13,7 +13,7 @@
             </not>
         </preConditions>
 
-        <createTable tableName="ROLES"
+        <createTable tableName="roles"
                      remarks="A table for roles">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
@@ -27,20 +27,20 @@
         </createTable>
 
         <rollback>
-            <dropTable tableName="ROLES"/>
+            <dropTable tableName="roles"/>
         </rollback>
     </changeSet>
 
     <changeSet id="insert-roles-in-role-table" author="achint.satsangi">
         <preConditions onFail="MARK_RAN">
-                <tableExists tableName="ROLES"/>
+                <tableExists tableName="roles"/>
         </preConditions>
 
-        <insert tableName="ROLES">
+        <insert tableName="roles">
             <column name="name">Administrator</column>
             <column name="type">ADMIN</column>
         </insert>
-        <insert tableName="ROLES">
+        <insert tableName="roles">
             <column name="name">Customer</column>
             <column name="type">CUSTOMER</column>
         </insert>

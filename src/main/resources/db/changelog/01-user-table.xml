@@ -9,11 +9,11 @@
     <changeSet id="create-user-table" author="achint.satsangi">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="USERS"/>
+                <tableExists tableName="users"/>
             </not>
         </preConditions>
 
-        <createTable tableName="USERS"
+        <createTable tableName="users"
                      remarks="A table for roles">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
@@ -30,21 +30,21 @@
         </createTable>
 
         <rollback>
-            <dropTable tableName="USERS"/>
+            <dropTable tableName="users"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="insert-USERS-in-user-table" author="achint.satsangi">
+    <changeSet id="insert-users-in-user-table" author="achint.satsangi">
         <preConditions onFail="MARK_RAN">
-                <tableExists tableName="USERS"/>
+                <tableExists tableName="users"/>
         </preConditions>
 
-        <insert tableName="USERS">
+        <insert tableName="users">
             <column name="name">Administrator</column>
             <column name="role_type">ADMIN</column>
             <column name="api_key">19289da1-daab-4ada-a508-e95a1531b09d</column>
         </insert>
-        <insert tableName="USERS">
+        <insert tableName="users">
             <column name="name">Customer</column>
             <column name="role_type">CUSTOMER</column>
             <column name="api_key">d037985c-7c4b-462a-9db5-2adf41aefe21</column>

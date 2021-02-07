@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table (name = "NEWS")
+@Table (name = "news")
 public class News {
 
   @NonNull

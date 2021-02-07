@@ -3,4 +3,8 @@ spring:
     username: 'db_user'
     password: '8b3b91c7'
     url: 'jdbc:mysql://localhost:3306/assessment'
-
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

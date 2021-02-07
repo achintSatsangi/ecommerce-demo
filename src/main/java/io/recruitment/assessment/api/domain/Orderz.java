@@ -25,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table (name = "ORDERZ")
+@Table (name = "orderz")
 public class Orderz {
 
   @NonNull

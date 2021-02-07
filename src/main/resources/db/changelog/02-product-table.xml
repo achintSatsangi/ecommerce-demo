@@ -9,11 +9,11 @@
     <changeSet id="create-product-table" author="achint.satsangi">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="PRODUCT"/>
+                <tableExists tableName="product"/>
             </not>
         </preConditions>
 
-        <createTable tableName="PRODUCT"
+        <createTable tableName="product"
                      remarks="A table for products">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
@@ -38,28 +38,28 @@
         </createTable>
 
         <rollback>
-            <dropTable tableName="USERS"/>
+            <dropTable tableName="users"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="insert-PRODUCT-in-product-table" author="achint.satsangi">
+    <changeSet id="insert-product-in-product-table" author="achint.satsangi">
         <preConditions onFail="MARK_RAN">
-                <tableExists tableName="PRODUCT"/>
+                <tableExists tableName="product"/>
         </preConditions>
 
-        <insert tableName="PRODUCT">
+        <insert tableName="product">
             <column name="name">Spanner</column>
             <column name="description">Good quality spanner</column>
             <column name="price">9.99</column>
             <column name="created_by">1</column>
         </insert>
-        <insert tableName="PRODUCT">
+        <insert tableName="product">
             <column name="name">Nails</column>
             <column name="description">Good quality nails</column>
             <column name="price">4.99</column>
             <column name="created_by">1</column>
         </insert>
-        <insert tableName="PRODUCT">
+        <insert tableName="product">
             <column name="name">Screws</column>
             <column name="description">Good quality screws</column>
             <column name="price">6.99</column>

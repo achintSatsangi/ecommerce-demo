@@ -22,7 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table (name = "USERS")
+@Table (name = "users")
 public class User {
 
   @NonNull

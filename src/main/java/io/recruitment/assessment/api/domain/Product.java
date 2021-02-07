@@ -29,7 +29,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table (name = "PRODUCT")
+@Table (name = "product")
 public class Product {
 
   @NonNull

@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table (name = "ROLES")
+@Table (name = "roles")
 public class Role {
 
   @NonNull
