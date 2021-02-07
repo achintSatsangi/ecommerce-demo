@@ -1,0 +1,101 @@
+openapi: 3.0.1
+info:
+  title: Ecommerce APIs
+  description: Open API specifications for Ecommerce Application
+  version: 1
+
+paths:
+
+  /products:
+    get:
+      operationId: getAllProducts
+
+      responses:
+        200:
+          description: success, list of all products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productList'
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /news:
+    get:
+      operationId: getAllNews
+
+      responses:
+        200:
+          description: success, list of all new
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newsList'
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+components:
+  schemas:
+    productList:
+      type: array
+      items:
+        $ref: '#/components/schemas/product'
+
+    product:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - price
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+
+    newsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/news'
+
+    news:
+      type: object
+      required:
+        - id
+        - title
+        - shortDescription
+        - longDescription
+        - imageUrl
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        shortDescription:
+          type: string
+        longDescription:
+          type: string
+        imageUrl:
+          type: string
+
+    error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string

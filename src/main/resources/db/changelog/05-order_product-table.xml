@@ -6,15 +6,18 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="create-ORDER_PRODUCT-table" author="achint.satsangi">
+    <changeSet id="create-order_product-table" author="achint.satsangi">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="ORDER_PRODUCT"/>
+                <tableExists tableName="order_product"/>
             </not>
         </preConditions>
 
-        <createTable tableName="ORDER_PRODUCT"
+        <createTable tableName="order_product"
                      remarks="A table for ORDER_PRODUCTs">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
             <column name="order_id" type="BIGINT" />
             <column name="product_id" type="BIGINT" />
             <column name="quantity" type="BIGINT" />
@@ -31,37 +34,19 @@
         </createTable>
 
         <rollback>
-            <dropTable tableName="ORDER"/>
+            <dropTable tableName="order"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="add-ID-column-to-order_product-table" author="achint.satsangi">
-        <preConditions onFail="HALT">
-            <tableExists tableName="ORDER_PRODUCT"/>
-        </preConditions>
-
-        <addColumn tableName="ORDER_PRODUCT">
-            <column name="ID" type="BIGINT" autoIncrement="true">
-                <constraints nullable="false" />
-            </column>
-        </addColumn>
-    </changeSet>
-
-    <changeSet  author="achint.satsangi"  id="addPrimaryKey-order_product">
-        <addPrimaryKey  columnNames="id"
-                        constraintName="pk_order_product"
-                        tableName="order_product"/>
-    </changeSet>
-
     <changeSet  author="achint.satsangi"  id="renameTable-orderz_product">
-        <renameTable  newTableName="ORDERZ_PRODUCT"
-                      oldTableName="ORDER_PRODUCT"/>
+        <renameTable  newTableName="orderz_product"
+                      oldTableName="order_product"/>
     </changeSet>
 
     <changeSet  author="achint.satsangi"  id="renameColumn-order_id">
         <renameColumn  columnDataType="BIGINT"
                        newColumnName="orderz_id"
                        oldColumnName="order_id"
-                       tableName="ORDERZ_PRODUCT"/>
+                       tableName="orderz_product"/>
     </changeSet>
 </databaseChangeLog>
