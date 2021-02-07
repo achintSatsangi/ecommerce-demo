@@ -313,9 +313,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
-  /order/addProduct:
+  /order/place:
     post:
-      operationId: postFreshOrder
+      operationId: placeFreshOrder
       parameters:
       - in: query
         name: userId

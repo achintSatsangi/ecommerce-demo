@@ -107,7 +107,7 @@ public class OrderApiDelegateImpl implements OrderApiDelegate {
 
     @Override
     @Transactional
-    public ResponseEntity<Order> postFreshOrder(UUID X_API_KEY,
+    public ResponseEntity<Order> placeFreshOrder(UUID X_API_KEY,
                                                  Order order,
                                                  Integer userId) {
         Optional<User> optionalAdminUser = userValidator.validateUserRole(X_API_KEY, ADMIN);
