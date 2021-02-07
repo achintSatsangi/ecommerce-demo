@@ -36,4 +36,19 @@
         </rollback>
     </changeSet>
 
+    <changeSet id="add-user_id-column-to-orderz-table" author="achint.satsangi">
+        <preConditions onFail="HALT">
+            <tableExists tableName="ORDER"/>
+        </preConditions>
+
+        <addColumn tableName="ORDER">
+            <column name="user_id" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet  author="achint.satsangi"  id="renameTable-orderz">
+        <renameTable  newTableName="ORDERZ"
+                      oldTableName="ORDER"/>
+    </changeSet>
+
 </databaseChangeLog>

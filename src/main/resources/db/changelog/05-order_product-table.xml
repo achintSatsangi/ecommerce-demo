@@ -35,4 +35,33 @@
         </rollback>
     </changeSet>
 
+    <changeSet id="add-ID-column-to-order_product-table" author="achint.satsangi">
+        <preConditions onFail="HALT">
+            <tableExists tableName="ORDER_PRODUCT"/>
+        </preConditions>
+
+        <addColumn tableName="ORDER_PRODUCT">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet  author="achint.satsangi"  id="addPrimaryKey-order_product">
+        <addPrimaryKey  columnNames="id"
+                        constraintName="pk_order_product"
+                        tableName="order_product"/>
+    </changeSet>
+
+    <changeSet  author="achint.satsangi"  id="renameTable-orderz_product">
+        <renameTable  newTableName="ORDERZ_PRODUCT"
+                      oldTableName="ORDER_PRODUCT"/>
+    </changeSet>
+
+    <changeSet  author="achint.satsangi"  id="renameColumn-order_id">
+        <renameColumn  columnDataType="BIGINT"
+                       newColumnName="orderz_id"
+                       oldColumnName="order_id"
+                       tableName="ORDERZ_PRODUCT"/>
+    </changeSet>
 </databaseChangeLog>
