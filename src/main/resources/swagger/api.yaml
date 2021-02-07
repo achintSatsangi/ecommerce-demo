@@ -108,7 +108,7 @@ paths:
           required: true
 
       requestBody:
-        description: The required body to initiate payment
+        description: The required body
         required: true
         content:
           application/json:
@@ -117,7 +117,7 @@ paths:
 
       responses:
         200:
-          description: OK returned if payment is initiated
+          description: OK returned if added
         500:
           description: Internal error occurred
           content:
@@ -141,7 +141,7 @@ paths:
           required: true
 
       requestBody:
-        description: The required body to initiate payment
+        description: The required body
         required: true
         content:
           application/json:
@@ -150,7 +150,7 @@ paths:
 
       responses:
         200:
-          description: OK returned if payment is initiated
+          description: OK returned if updated
         500:
           description: Internal error occurred
           content:
@@ -187,6 +187,99 @@ paths:
         500:
           description: Something not OK
 
+  /admin/news/add:
+    post:
+      operationId: addNews
+      description: addNews
+
+      parameters:
+        - in: header
+          name: X-API-KEY
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      requestBody:
+        description: The required body of news
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/news'
+
+      responses:
+        200:
+          description: OK returned if added
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        400:
+          description: Bad request
+
+  /admin/news/update:
+    post:
+      operationId: updateNews
+      description: updateNews
+
+      parameters:
+        - in: header
+          name: X-API-KEY
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      requestBody:
+        description: The required body of news
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/news'
+
+      responses:
+        200:
+          description: OK returned
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        400:
+          description: Bad request
+
+  /admin/news/delete/{id}:
+    delete:
+      operationId: deleteNews
+      description: deleteNews
+
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: newsId
+        - in: header
+          name: X-API-KEY
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      responses:
+        200:
+          description: OK
+        404:
+          description: product not found
+        500:
+          description: Something not OK
+
 components:
   schemas:
     productList:
@@ -203,7 +296,7 @@ components:
         - price
       properties:
         id:
-          type: string
+          type: integer
         name:
           type: string
         description:
@@ -227,7 +320,7 @@ components:
         - imageUrl
       properties:
         id:
-          type: string
+          type: integer
         title:
           type: string
         shortDescription:

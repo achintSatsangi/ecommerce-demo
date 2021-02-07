@@ -23,9 +23,7 @@
             </column>
             <column name="short_description" type="varchar(1000)"/>
             <column name="long_description" type="varchar(10000)"/>
-            <column name="image_url" type="varchar(2000)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="image_url" type="varchar(2000)"/>
             <column name="created_by" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
