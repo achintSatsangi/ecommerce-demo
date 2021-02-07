@@ -27,9 +27,21 @@ public class ProductsApiDelegateImpl implements ProductsApiDelegate {
     }
 
     @Override
-    @Transactional
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(repository.findAll()
+                .stream()
+                .map(entity -> modelMapper.map(entity, Product.class))
+                .collect(Collectors.toList()));
+    }
+
+    @Override
+    public ResponseEntity<Product> getProduct(Integer id) {
+        return ResponseEntity.ok(modelMapper.map(repository.findById(id), Product.class));
+    }
+
+    @Override
+    public ResponseEntity<List<Product>> searchProduct(String query) {
+        return ResponseEntity.ok(repository.findBySearchText(query)
                 .stream()
                 .map(entity -> modelMapper.map(entity, Product.class))
                 .collect(Collectors.toList()));

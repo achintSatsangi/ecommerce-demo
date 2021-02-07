@@ -24,6 +24,56 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
 
+  /products/{id}:
+    get:
+      operationId: getProduct
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: productId
+
+      responses:
+        200:
+          description: success, product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+  /products/search:
+    get:
+      operationId: searchProduct
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+          description: List of products
+
+      responses:
+        200:
+          description: success, product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productList'
+        500:
+          description: Internal error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
   /news:
     get:
       operationId: getAllNews
