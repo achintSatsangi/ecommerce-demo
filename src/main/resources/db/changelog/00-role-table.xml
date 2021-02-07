@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create-roles-table" author="achint.satsangi">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="role"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="ROLES"
+                     remarks="A table for roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="ROLES"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="insert-roles-in-role-table" author="achint.satsangi">
+        <preConditions onFail="MARK_RAN">
+                <tableExists tableName="ROLES"/>
+        </preConditions>
+
+        <insert tableName="ROLES">
+            <column name="name">Administrator</column>
+            <column name="type">ADMIN</column>
+        </insert>
+        <insert tableName="ROLES">
+            <column name="name">Customer</column>
+            <column name="type">CUSTOMER</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

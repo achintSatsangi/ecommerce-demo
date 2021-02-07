@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create-NEWS-table" author="achint.satsangi">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="NEWS"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="NEWS"
+                     remarks="A table for NEWSs">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="title" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="short_description" type="varchar(1000)"/>
+            <column name="long_description" type="varchar(10000)"/>
+            <column name="image_url" type="varchar(2000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="BIGINT">
+            </column>
+            <column name="updated_date" type="TIMESTAMP">
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="USERS"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="insert-NEWS-in-NEWS-table" author="achint.satsangi">
+        <preConditions onFail="MARK_RAN">
+                <tableExists tableName="NEWS"/>
+        </preConditions>
+
+        <insert tableName="NEWS">
+            <column name="title">News item 1</column>
+            <column name="short_description">Some good humour...</column>
+            <column name="long_description">
+                <![CDATA[<html>
+                    <body>
+                        <h1>Ha HA HA</h1>
+                    </body>
+                </html>]]>
+            </column>
+            <column name="image_url"><![CDATA[https://i.pinimg.com/736x/1f/8b/c5/1f8bc5695ae270c909edfb94069a62dd.jpg]]></column>
+            <column name="created_by">1</column>
+        </insert>
+        <insert tableName="NEWS">
+            <column name="title">Spanner item 1</column>
+            <column name="short_description">Spanners to take over the world</column>
+            <column name="long_description">
+                <![CDATA[<html>
+                    <body>
+                        <h1>Ha HA HA</h1>
+                    </body>
+                </html>]]>
+            </column>
+            <column name="image_url"><![CDATA[https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3j2-FmJAuzJO_5j-GvLd_LR8uRN1ig3MP4A5-dkIIMHHy-XLoSwFdQMikHMxYm1pm5bF6C9hD&usqp=CAc]]></column>
+            <column name="created_by">1</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

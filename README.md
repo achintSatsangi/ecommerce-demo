@@ -1,15 +1,17 @@
-# Spring Boot starter for Java 11
-This is a starter including:
-* Spring Boot Web starter
-* Spring Boot Data JPA starter
-    * Using MySQL
-* Spring Boot Devtools and Annotation Processor
-* A sample REST controller
+## Technical Overview
+- Spring boot
+- Java 11
+- Mysql running on docker
+- Liquibnase for database version management
 
-## MySQL in Docker
-`application.yml` already contains connection information to this DB.
-```shell script
-docker-compose up -d
+## Building the app locally
+
+```
+mvn clean install
 ```
 
-Good luck!
+## Run the app locally
+
+```
+mvn spring-boot:run
+```

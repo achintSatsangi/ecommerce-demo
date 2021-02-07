@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create-user-table" author="achint.satsangi">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="USERS"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="USERS"
+                     remarks="A table for roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_type" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="api_key" type="uuid">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="USERS"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="insert-USERS-in-user-table" author="achint.satsangi">
+        <preConditions onFail="MARK_RAN">
+                <tableExists tableName="USERS"/>
+        </preConditions>
+
+        <insert tableName="USERS">
+            <column name="name">Administrator</column>
+            <column name="role_type">ADMIN</column>
+            <column name="api_key">19289da1-daab-4ada-a508-e95a1531b09d</column>
+        </insert>
+        <insert tableName="USERS">
+            <column name="name">Customer</column>
+            <column name="role_type">CUSTOMER</column>
+            <column name="api_key">d037985c-7c4b-462a-9db5-2adf41aefe21</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

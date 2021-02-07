@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create-product-table" author="achint.satsangi">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PRODUCT"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="PRODUCT"
+                     remarks="A table for products">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(256)"/>
+            <column name="price" type="DECIMAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="BIGINT">
+            </column>
+            <column name="updated_date" type="TIMESTAMP">
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="USERS"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="insert-PRODUCT-in-product-table" author="achint.satsangi">
+        <preConditions onFail="MARK_RAN">
+                <tableExists tableName="PRODUCT"/>
+        </preConditions>
+
+        <insert tableName="PRODUCT">
+            <column name="name">Spanner</column>
+            <column name="description">Good quality spanner</column>
+            <column name="price">9.99</column>
+            <column name="created_by">1</column>
+        </insert>
+        <insert tableName="PRODUCT">
+            <column name="name">Nails</column>
+            <column name="description">Good quality nails</column>
+            <column name="price">4.99</column>
+            <column name="created_by">1</column>
+        </insert>
+        <insert tableName="PRODUCT">
+            <column name="name">Screws</column>
+            <column name="description">Good quality screws</column>
+            <column name="price">6.99</column>
+            <column name="created_by">1</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
