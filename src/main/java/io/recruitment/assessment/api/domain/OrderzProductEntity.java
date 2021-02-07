@@ -14,6 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -25,7 +26,7 @@ import java.sql.Timestamp;
 @EqualsAndHashCode
 @Entity
 @Table (name = "orderz_product")
-public class OrderzProduct {
+public class OrderzProductEntity {
 
     @Id
     private Integer id;
@@ -37,10 +38,12 @@ public class OrderzProduct {
     private Integer createdBy;
 
     @ManyToOne
-    private Orderz orderz;
+    @JoinColumn(name="orderz_id")
+    private OrderzEntity orderzEntity;
 
     @ManyToOne
-    private Product product;
+    @JoinColumn(name="product_id")
+    private ProductEntity productEntity;
 
     @CreationTimestamp
     @ColumnDefault("CURRENT_TIMESTAMP")

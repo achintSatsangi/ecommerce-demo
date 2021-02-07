@@ -24,7 +24,7 @@
             <column name="role_type" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="api_key" type="uuid">
+            <column name="api_key" type="varchar(256)">
                 <constraints nullable="true"/>
             </column>
         </createTable>

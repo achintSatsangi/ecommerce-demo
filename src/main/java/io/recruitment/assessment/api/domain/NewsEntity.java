@@ -15,7 +15,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Builder(toBuilder = true)
@@ -25,9 +24,8 @@ import java.sql.Timestamp;
 @EqualsAndHashCode
 @Entity
 @Table (name = "news")
-public class News {
+public class NewsEntity {
 
-  @NonNull
   @Id
   private Integer id;
 

@@ -22,9 +22,8 @@ import javax.persistence.Table;
 @EqualsAndHashCode
 @Entity
 @Table (name = "roles")
-public class Role {
+public class RoleEntity {
 
-  @NonNull
   @Id
   private Integer id;
 

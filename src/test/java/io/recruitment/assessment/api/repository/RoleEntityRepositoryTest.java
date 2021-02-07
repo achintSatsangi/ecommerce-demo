@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
 @SpringBootTest
-class RoleRepositoryTest {
+class RoleEntityRepositoryTest {
 
     @Autowired
     private RoleRepository repository;

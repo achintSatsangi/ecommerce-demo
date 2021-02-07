@@ -13,15 +13,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.UUID;
 
 @Builder(toBuilder = true)
 @Getter
@@ -30,9 +25,8 @@ import java.util.UUID;
 @EqualsAndHashCode
 @Entity
 @Table (name = "product")
-public class Product {
+public class ProductEntity {
 
-  @NonNull
   @Id
   private Integer id;
 

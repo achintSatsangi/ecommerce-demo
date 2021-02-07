@@ -14,7 +14,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.UUID;
 
 @Builder(toBuilder = true)
 @Getter
@@ -25,7 +24,6 @@ import java.util.UUID;
 @Table (name = "users")
 public class User {
 
-  @NonNull
   @Id
   private Integer id;
 
@@ -34,7 +32,7 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "role_type")
-  private Role.RoleType roleType;
+  private RoleEntity.RoleType roleType;
 
-  private UUID apiKey;
+  private String apiKey;
 }

@@ -26,9 +26,8 @@ import java.util.List;
 @EqualsAndHashCode
 @Entity
 @Table (name = "orderz")
-public class Orderz {
+public class OrderzEntity {
 
-  @NonNull
   @Id
   private Integer id;
 
@@ -52,6 +51,6 @@ public class Orderz {
   @Column(name = "updated_date")
   private Timestamp updatedAt;
 
-  @OneToMany(mappedBy = "orderz")
-  private List<OrderzProduct> orderzProducts;
+  @OneToMany(mappedBy = "orderzEntity")
+  private List<OrderzProductEntity> orderzProductEntities;
 }

@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Ecommerce APIs
   description: Open API specifications for Ecommerce Application
-  version: 1
+  version: 1.0.0
 
 paths:
 
@@ -163,6 +163,8 @@ paths:
   /admin/product/delete/{id}:
     delete:
       operationId: deleteProduct
+      description: deleteProduct
+
       parameters:
         - in: path
           name: id
@@ -184,6 +186,7 @@ paths:
           description: product not found
         500:
           description: Something not OK
+
 components:
   schemas:
     productList:

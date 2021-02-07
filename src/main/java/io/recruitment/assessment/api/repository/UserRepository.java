@@ -14,5 +14,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select c from User c "
             + "where c.apiKey = :apiKey")
-    Optional<User> findByApiKey(@Param("apiKey") UUID apiKey);
+    Optional<User> findByApiKey(@Param("apiKey") String apiKey);
 }
