@@ -7,12 +7,14 @@
 - Builds on Github actions 
 
 ## Building the app locally
+The build uses in-memory databases to run its tests so it doesn't require anything for building as such
 
 ```
 mvn clean install
 ```
 
 ## Run the app locally
+This requires an locally / remotely running mysql instance and put the details in application.yaml in main resources.
 
 ```
 mvn spring-boot:run
@@ -28,3 +30,4 @@ mvn spring-boot:run
 - Write unit tests for ApiDelegate methods
 - Move user validation to a proper filter
 - Revisit the hibernate wiring of domain objects
+- Refactor OrderApiDelegateImpl
